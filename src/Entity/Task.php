@@ -22,8 +22,9 @@ class Task
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $categoryId = null;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'tasks')]
+    #[ORM\JoinTable(name: 'task_category')]
+    private Collection $categories;
 
     #[ORM\Column]
     private ?int $statusId = null;
@@ -57,6 +58,7 @@ class Task
     public function __construct()
     {
         $this->assignedUsers = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,14 +66,29 @@ class Task
         return $this->id;
     }
 
-    public function getCategoryId(): ?int
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
     {
-        return $this->categoryId;
+        return $this->categories;
     }
 
-    public function setCategoryId(?int $categoryId): static
+    public function addCategory(Category $category): static
     {
-        $this->categoryId = $categoryId;
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeTask($this);
+        }
 
         return $this;
     }

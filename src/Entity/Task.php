@@ -26,8 +26,9 @@ class Task
     #[ORM\JoinTable(name: 'task_category')]
     private Collection $categories;
 
-    #[ORM\Column]
-    private ?int $statusId = null;
+    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Status $status = null;
 
     #[ORM\Column]
     private ?int $priorityId = null;
@@ -93,14 +94,14 @@ class Task
         return $this;
     }
 
-    public function getStatusId(): ?int
+    public function getStatus(): ?Status
     {
-        return $this->statusId;
+        return $this->status;
     }
 
-    public function setStatusId(int $StatusId): static
+    public function setStatus(?Status $status): self
     {
-        $this->statusId = $StatusId;
+        $this->status = $status;
 
         return $this;
     }

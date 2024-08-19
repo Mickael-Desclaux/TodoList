@@ -6,7 +6,7 @@ use App\Entity\Priority;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class StatusFixtures extends Fixture
+class PriorityFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

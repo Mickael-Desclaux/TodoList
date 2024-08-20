@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TaskController!
+{% endblock %}
+
+{% block body %}
+	{{ form_start(form) }}
+	{{ form_label(form.title) }}
+	{{ form_widget(form.title) }}
+	{{ form_label(form.description) }}
+	{{ form_widget(form.description) }}
+	{{ form_label(form.priorityId) }}
+	{{ form_widget(form.priorityId) }}
+	{{ form_label(form.limitDate) }}
+	{{ form_widget(form.limitDate) }}
+	{{ form_label(form.categories) }}
+	{{ form_widget(form.categories) }}
+	{{ form_label(form.status) }}
+	{{ form_widget(form.status) }}
+    {{ form_label(form.assignedUsers) }}
+	{{ form_widget(form.assignedUsers) }}
+	{{ form_widget(form.submit) }}
+	{{ form_end(form) }}
+{% endblock %}
+

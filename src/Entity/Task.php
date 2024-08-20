@@ -19,7 +19,7 @@ class Task
     #[ORM\Column(length: 50)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 1000, nullable: true)]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'tasks')]
@@ -33,17 +33,17 @@ class Task
     #[ORM\Column]
     private ?int $priorityId = null;
 
-    #[ORM\Column(length: 10)]
-    #[Assert\Date]
-    private ?string $creationDate = null;
+    #[Assert\Type("\DateTimeInterface")]
+    #[ORM\Column(type: 'datetime')]
+    private $creationDate = null;
 
-    #[ORM\Column(length: 10)]
-    #[Assert\Date]
-    private ?string $limitDate = null;
+    #[Assert\Type("\DateTimeInterface")]
+    #[ORM\Column(type: 'datetime')]
+    private $limitDate = null;
 
-    #[ORM\Column(length: 10)]
-    #[Assert\Date]
-    private ?string $updateDate = null;
+    #[Assert\Type("\DateTimeInterface")]
+    #[ORM\Column(type: 'datetime')]
+    private $updateDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
@@ -60,7 +60,23 @@ class Task
     {
         $this->assignedUsers = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->creationDate = new \DateTime();
+        $this->updateDate = new \DateTime();
     }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->creationDate = new \DateTime();
+        $this->updateDate = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateDate = new \DateTime();
+    }
+
 
     public function getId(): ?int
     {
@@ -142,36 +158,36 @@ class Task
         return $this;
     }
 
-    public function getCreationDate(): ?string
+    public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(string $creationDate): static
+    public function setCreationDate(\DateTimeInterface $creationDate): self
     {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getLimitDate(): ?string
+    public function getLimitDate(): ?\DateTimeInterface
     {
         return $this->limitDate;
     }
 
-    public function setLimitDate(string $limitDate): static
+    public function setLimitDate(\DateTimeInterface $limitDate): self
     {
         $this->limitDate = $limitDate;
 
         return $this;
     }
 
-    public function getUpdateDate(): ?string
+    public function getUpdateDate(): ?\DateTimeInterface
     {
         return $this->updateDate;
     }
 
-    public function setUpdateDate(string $updateDate): static
+    public function setUpdateDate(\DateTimeInterface $updateDate): self
     {
         $this->updateDate = $updateDate;
 

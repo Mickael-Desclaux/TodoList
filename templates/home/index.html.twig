@@ -4,24 +4,18 @@
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
-
-	<div class="example-wrapper">
-		<h1>Hello! ✅</h1>
-        {% for task in tasks %}
-        <div>{{ task.title }}</div>
-        {% endfor %}
-	</div>
+	{% for task in tasks %}
+		<ul>
+			<li>{{ task.title }}</li>
+			<li>{{ task.description }}</li>
+			<li>{{ task.status.name }}</li>
+			<li>{{ task.priorityId }}</li>
+			<li>{{ task.creationDate|date("d/m/Y H:i:s") }}</li>
+			<li>{{ task.limitDate|date("d/m/Y H:i:s") }}</li>
+			<li>{{ task.updateDate|date("d/m/Y H:i:s") }}</li>
+			<li>{{ task.user.id }}</li>
+			<li><a href="{{ path('app_task_edit', {id: task.id}) }}">Éditer</a></li>
+		</ul>
+	{% endfor %}
 {% endblock %}
 

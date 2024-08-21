@@ -21,6 +21,28 @@ class TaskType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        if ($options['is_edit'] === false) {
+            $builder
+            ->add(
+                'priorityId',
+                ChoiceType::class,
+                [
+                    "label" => "Priorité",
+                    "choices" => [
+                        "Basse" => 1,
+                        "Moyenne" => 2,
+                        "Haute" => 3
+                    ]
+                ]
+            )
+            ->add(
+                'limitDate',
+                DateType::class,
+                [
+                    "widget" => "single_text"
+                ]
+                );
+        };
         $builder
             ->add(
                 'title',
@@ -45,36 +67,14 @@ class TaskType extends AbstractType
                 ]
             )
             ->add(
-                'priorityId',
-                ChoiceType::class,
+                'status',
+                EntityType::class,
                 [
-                    "label" => "Priorité",
-                    "choices" => [
-                        "Basse" => 1,
-                        "Moyenne" => 2,
-                        "Haute" => 3
-                    ]
+                    "class" => Status::class,
+                    "label" => "Statut",
+                    "choice_label" => "name"
                 ]
             )
-            ->add(
-                'limitDate',
-                DateType::class,
-                [
-                    "widget" => "single_text"
-                ]
-            )
-            ->add("categories", CollectionType::class, [
-                "entry_type" => CategoryType::class,
-                "entry_options" => ["label" => false],
-                "allow_add" => true,
-                "by_reference" => false,
-            ])
-            ->add('status', EntityType::class, 
-            [
-                "class" => Status::class,
-                "label" => "Statut",
-                "choice_label" => "name"
-            ])
             ->add("assignedUsers", EntityType::class, [
                 "class" => User::class,
                 "choice_label" => function (User $user) {
@@ -83,17 +83,25 @@ class TaskType extends AbstractType
                 "multiple" => true,
                 "expanded" => true
             ])
+            // TODO: Add multiple categories to a task
+            // ->add('categories', CollectionType::class, [
+            //     'entry_type' => CategoryType::class,
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'by_reference' => false,
+            //     'label' => true
+            // ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => ['class' => 'btn btn-outline-primary']
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Task::class,
+            'is_edit' => false,
         ]);
     }
 }

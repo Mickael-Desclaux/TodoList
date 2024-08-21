@@ -16,7 +16,7 @@ class TaskController extends AbstractController
     public function addTask(Request $request, ManagerRegistry $doctrine): Response
     {
         $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
+        $form = $this->createForm(TaskType::class, $task, ['is_edit' => false]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -32,6 +32,25 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'task' => $task,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/task/edit/{id}', name: 'app_task_edit')]
+    public function editTask(Request $request, Task $task, ManagerRegistry $doctrine): Response
+    {
+        $form = $this->createForm(TaskType::class, $task, ['is_edit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

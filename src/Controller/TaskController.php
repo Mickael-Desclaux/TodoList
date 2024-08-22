@@ -54,4 +54,12 @@ class TaskController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('task/detail/{id}', name: 'app_task_detail')]
+    public function detailTask(Task $task): Response
+    {
+        return $this->render('task/detail.html.twig', [
+            'task' => $task
+        ]);
+    }
 }

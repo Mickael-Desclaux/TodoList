@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TaskController!
+{% endblock %}
+
+{% block body %}
+	<ul>
+		<li>{{ task.title }}</li>
+		<li>{{ task.description }}</li>
+		<li>{{ task.status.name }}</li>
+		<li>{{ task.priorityId }}</li>
+		<li>{{ task.creationDate|date("d/m/Y") }}</li>
+		<li>{{ task.limitDate|date("d/m/Y") }}</li>
+		<li>{{ task.updateDate|date("d/m/Y") }}</li>
+		<li>{{ task.user.id }}</li>
+		<li>
+			<a href="{{ path('app_task_edit', {id: task.id}) }}">Éditer</a>
+		</li>
+	</ul>
+{% endblock %}

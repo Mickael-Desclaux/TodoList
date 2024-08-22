@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Priority;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Entity\Status;
@@ -24,15 +25,12 @@ class TaskType extends AbstractType
         if ($options['is_edit'] === false) {
             $builder
             ->add(
-                'priorityId',
-                ChoiceType::class,
+                'priority',
+                EntityType::class,
                 [
+                    "class" => Priority::class,
                     "label" => "Priorité",
-                    "choices" => [
-                        "Basse" => 1,
-                        "Moyenne" => 2,
-                        "Haute" => 3
-                    ]
+                    "choice_label" => "name"
                 ]
             )
             ->add(

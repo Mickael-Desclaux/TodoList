@@ -4,18 +4,51 @@
 {% endblock %}
 
 {% block body %}
-	<ul>
-		<li>{{ task.title }}</li>
-		<li>{{ task.description }}</li>
-		<li>{{ task.status.name }}</li>
-		<li>test</li>
-		<li>{{ task.priorityId }}</li>
-		<li>{{ task.creationDate|date("d/m/Y") }}</li>
-		<li>{{ task.limitDate|date("d/m/Y") }}</li>
-		<li>{{ task.updateDate|date("d/m/Y") }}</li>
-		<li>{{ task.user.id }}</li>
-		<li>
-			<a href="{{ path('app_task_edit', {id: task.id}) }}">Éditer</a>
-		</li>
-	</ul>
+
+	<div class="container-fluid">
+		<div class="row mt-3 text-center">
+			<div class="col">
+				<h1>{{ task.title }}</h1>
+			</div>
+		</div>
+		<div class="row mt-5">
+			<div class="col-lg-5 offset-lg-2 col-md-12">
+				<h2 class="mb-3">Description</h2>
+				<p>
+					{{task.description}}
+				</p>
+			</div>
+			<div class="col-lg-3 col-md-12">
+				<div>
+					<h3 class="text-center mb-3">Informations supplémentaires</h3>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Statut :
+							{{ task.status.name }}</li>
+						<li class="list-group-item">Priorité :
+							{{ task.priority.name }}</li>
+						<li class="list-group-item">Date limite :
+							{{ task.limitDate|date("d/m/Y") }}</li>
+						<li class="list-group-item">Date de création :
+							{{ task.creationDate|date("d/m/Y") }}</li>
+						<li class="list-group-item">Date de mise à jour :
+							{{ task.updateDate|date("d/m/Y") }}</li>
+						<li class="list-group-item">Tâche assignée à :
+							<ul>
+								{% for user in task.assignedUsers %}
+									<li>{{ user.firstname }}
+										{{ user.lastname }}</li>
+								{% endfor %}
+							</ul>
+						</li>
+						<li class="list-group-item">
+							<button class="btn btn-primary mt-2">
+								<a href="{{ path('app_task_edit', {id: task.id}) }}" class="link">Éditer</a>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
+

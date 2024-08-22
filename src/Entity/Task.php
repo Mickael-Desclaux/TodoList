@@ -31,8 +31,9 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status = null;
 
-    #[ORM\Column]
-    private ?int $priorityId = null;
+    #[ORM\ManyToOne(targetEntity: Priority::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Priority $priority = null;
 
     #[Assert\Type("\DateTimeInterface")]
     #[ORM\Column(type: 'datetime')]
@@ -123,14 +124,14 @@ class Task
         return $this;
     }
 
-    public function getPriorityId(): ?int
+    public function getPriority(): ?Priority
     {
-        return $this->priorityId;
+        return $this->priority;
     }
 
-    public function setPriorityId(int $priorityId): static
+    public function setPriority(?Priority $priority): static
     {
-        $this->priorityId = $priorityId;
+        $this->priority = $priority;
 
         return $this;
     }

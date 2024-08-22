@@ -1,15 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}To-Do List
 {% endblock %}
 
 {% block body %}
-<h1>Test</h1>
-	{% for task in tasks %}
-		<ul>
-			<li>{{ task.title }}</li>
-			<li><a href="{{ path('app_task_detail', {id: task.id}) }}">Détail</a></li>
-		</ul>
-	{% endfor %}
+	<div class="container-fluid">
+		<div class="row justify-content-center mt-5">
+			<div class="col-lg-3 col-md-12 mb-4">
+				<div class="card">
+					<div class="card-header text-center">
+						En Attente
+					</div>
+					<ul class="list-group list-group-flush">
+						{% for task in pendingTasks %}
+							<li class="list-group-item">
+								<div class="d-flex justify-content-between align-items-center">
+									<span>{{ task.title }}</span>
+									<button class="btn btn-primary">
+										<a href="{{ path('app_task_detail', {id: task.id}) }}" class="link">Détail</a>
+									</button>
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-md-12 mb-4">
+				<div class="card">
+					<div class="card-header text-center">
+						En Cours
+					</div>
+					<ul class="list-group list-group-flush">
+						{% for task in inProgressTasks %}
+							<li class="list-group-item">
+								<div class="d-flex justify-content-between align-items-center">
+									<span>{{ task.title }}</span>
+									<button class="btn btn-primary">
+										<a href="{{ path('app_task_detail', {id: task.id}) }}" class="link">Détail</a>
+									</button>
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 

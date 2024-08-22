@@ -15,10 +15,13 @@ class HomeController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $repository = $doctrine->getRepository(Task::class);
-        $tasks = $repository->findBy(['status' => [1, 2]]);
+
+        $pendingTasks = $repository->findBy(['status' => 1]);
+        $inProgressTasks = $repository->findBy(['status' => 2]);
 
         return $this->render('home/index.html.twig', [
-            'tasks' => $tasks,
+            'pendingTasks' => $pendingTasks,
+            'inProgressTasks' => $inProgressTasks,
         ]);
     }
 }

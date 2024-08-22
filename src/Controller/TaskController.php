@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Priority;
 use App\Entity\Task;
 use App\Form\TaskType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +15,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class TaskController extends AbstractController
 {
     #[Route('/task/add', name: 'app_task_add')]
-    public function addTask(Request $request, ManagerRegistry $doctrine): Response
+    public function addTask(Request $request, EntityManagerInterface $em): Response
     {
         $task = new Task();
+
+        $defaultPriority = $em->getRepository(Priority::class)->find(2);
+        $task->setPriority($defaultPriority);
+
         $form = $this->createForm(TaskType::class, $task, ['is_edit' => false]);
 
         $form->handleRequest($request);
@@ -23,7 +29,6 @@ class TaskController extends AbstractController
             $user = $this->getUser();
             $task->setUserId($user);
 
-            $em = $doctrine->getManager();
             $em->persist($task);
             $em->flush();
 

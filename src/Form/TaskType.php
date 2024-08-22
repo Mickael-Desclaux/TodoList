@@ -2,10 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Priority;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Entity\Status;
+use App\Entity\Priority;
+use App\Repository\PriorityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,12 +17,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TaskType extends AbstractType
-{
+{    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['is_edit'] === false) {
@@ -37,7 +39,8 @@ class TaskType extends AbstractType
                 'limitDate',
                 DateType::class,
                 [
-                    "widget" => "single_text"
+                    "widget" => "single_text",
+                    "label" => "Date Limite"
                 ]
                 );
         };
@@ -56,7 +59,7 @@ class TaskType extends AbstractType
             )
             ->add(
                 'description',
-                TextType::class,
+                TextareaType::class,
                 [
                     "label" => "Description",
                     "constraints" => [
@@ -75,11 +78,13 @@ class TaskType extends AbstractType
             )
             ->add("assignedUsers", EntityType::class, [
                 "class" => User::class,
+                "label" => "Assignation",
                 "choice_label" => function (User $user) {
                     return $user->getFirstname() . ' ' . $user->getLastname();
                 },
+                "autocomplete" => true,
                 "multiple" => true,
-                "expanded" => true
+                "expanded" => false
             ])
             // TODO: Add multiple categories to a task
             // ->add('categories', CollectionType::class, [

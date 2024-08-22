@@ -1,15 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}Ajouter un utilisateur
+{% endblock %}
 
 {% block body %}
-    {{ form_start(user_form) }}
-    {{ form_label(user_form.email) }}
-    {{ form_widget(user_form.email) }}
-    {{ form_label(user_form.firstname) }}
-    {{ form_widget(user_form.firstname) }}
-    {{ form_label(user_form.lastname) }}
-    {{ form_widget(user_form.lastname) }}
-    {{ form_widget(user_form.submit) }}
-    {{ form_end(user_form) }}
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-center mt-5">
+			<div class="col-lg-4">
+				{{ form_start(user_form) }}
+				{{ form_label(user_form.email, null, { 'label_attr' : { 'class': 'form-label' }}) }}
+				{{ form_widget(user_form.email, {'attr': { 'class': 'form-control mb-2'}}) }}
+				{{ form_label(user_form.password, null, { 'label_attr' : { 'class': 'form-label' }}) }}
+				{{ form_widget(user_form.password, {'attr': { 'class': 'form-control mb-2'}}) }}
+				{{ form_label(user_form.firstname, null, { 'label_attr' : { 'class': 'form-label' }}) }}
+				{{ form_widget(user_form.firstname, {'attr': { 'class': 'form-control mb-2'}}) }}
+				{{ form_label(user_form.lastname, null, { 'label_attr' : { 'class': 'form-label' }}) }}
+				{{ form_widget(user_form.lastname, {'attr': { 'class': 'form-control mb-2'}}) }}
+				{{ form_widget(user_form.submit, {'attr': { 'class': 'btn btn-primary mt-1'}}) }}
+				{{ form_end(user_form) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}

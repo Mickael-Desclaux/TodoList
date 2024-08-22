@@ -4,20 +4,26 @@
 {% endblock %}
 
 {% block body %}
-	{{ form_start(form) }}
-	{{ form_label(form.title) }}
-	{{ form_widget(form.title) }}
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-center mt-5">
+			<div class="col-lg-6">
+				{{ form_start(form) }}
+				{{ form_label(form.title, null, { 'label_attr': { 'class': 'form-label' }}) }}
+				{{ form_widget(form.title, {'attr': { 'class': 'form-control mb-2'}}) }}
 
-	{{ form_label(form.description) }}
-	{{ form_widget(form.description) }}
+				{{ form_label(form.description, null, { 'label_attr': { 'class': 'form-label' }}) }}
+				{{ form_widget(form.description, {'attr': { 'class': 'form-control mb-2'}}) }}
 
-	{{ form_label(form.status) }}
-	{{ form_widget(form.status) }}
+				{{ form_label(form.status, null, { 'label_attr': { 'class': 'form-label' }}) }}
+				{{ form_widget(form.status, {'attr': { 'class': 'form-control mb-2'}}) }}
 
-	{{ form_label(form.assignedUsers) }}
-	{{ form_widget(form.assignedUsers) }}
+				{{ form_label(form.assignedUsers, null, { 'label_attr': { 'class': 'form-label' }}) }}
+				{{ form_widget(form.assignedUsers, {'attr': { 'class': 'mb-2'}}) }}
 
-	{{ form_widget(form.submit) }}
-	{{ form_end(form) }}
+				{{ form_widget(form.submit, {'attr': { 'class': 'btn btn-primary mt-1'}}) }}
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}
 

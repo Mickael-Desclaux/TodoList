@@ -16,9 +16,7 @@
 							<li class="list-group-item">
 								<div class="d-flex justify-content-between align-items-center">
 									<span>{{ task.title }}</span>
-									<button class="btn btn-primary">
-										<a href="{{ path('app_task_detail', {id: task.id}) }}" class="link">Détail</a>
-									</button>
+									<a href="{{ path('app_task_detail', {id: task.id}) }}" class="btn btn-primary link" role="button">Détail</a>
 								</div>
 							</li>
 						{% endfor %}
@@ -36,15 +34,16 @@
 							<li class="list-group-item">
 								<div class="d-flex justify-content-between align-items-center">
 									<span>{{ task.title }}</span>
-									<button class="btn btn-primary">
-										<a href="{{ path('app_task_detail', {id: task.id}) }}" class="link">Détail</a>
-									</button>
+									<a href="{{ path('app_task_detail', {id: task.id}) }}" class="btn btn-primary link" role="button">Détail</a>
 								</div>
 							</li>
 						{% endfor %}
 					</ul>
 				</div>
 			</div>
+		</div>
+		<div>
+			<a href="{{ path('app_task_add')}}" class="btn btn-primary link" id="add_task" role="button">Ajouter une tâche</a>
 		</div>
 	</div>
 {% endblock %}

@@ -5,10 +5,8 @@ namespace App\Form;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Entity\Status;
+use App\Entity\Category;
 use App\Entity\Priority;
-use App\Repository\PriorityRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,29 +17,30 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TaskType extends AbstractType
-{    
+{
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['is_edit'] === false) {
             $builder
-            ->add(
-                'priority',
-                EntityType::class,
-                [
-                    "class" => Priority::class,
-                    "label" => "Priorité",
-                    "choice_label" => "name"
-                ]
-            )
-            ->add(
-                'limitDate',
-                DateType::class,
-                [
-                    "widget" => "single_text",
-                    "label" => "Date Limite"
-                ]
+                ->add(
+                    'priority',
+                    EntityType::class,
+                    [
+                        "class" => Priority::class,
+                        "label" => "Priorité",
+                        "choice_label" => "name"
+                    ]
+                )
+                ->add(
+                    'limitDate',
+                    DateType::class,
+                    [
+                        "widget" => "single_text",
+                        "label" => "Date Limite"
+                    ]
                 );
         };
         $builder
@@ -86,14 +85,19 @@ class TaskType extends AbstractType
                 "multiple" => true,
                 "expanded" => false
             ])
-            // TODO: Add multiple categories to a task
-            // ->add('categories', CollectionType::class, [
-            //     'entry_type' => CategoryType::class,
-            //     'allow_add' => true,
-            //     'allow_delete' => true,
-            //     'by_reference' => false,
-            //     'label' => true
-            // ])
+            ->add('categories', EntityType::class, [
+                'class' => Category::class,
+                'label' => "Catégories",
+                'choice_label' => 'name',
+                "autocomplete" => true,
+                "multiple" => true,
+                "expanded" => false,
+                "tom_select_options" => [
+                    "create" => true,
+                    "createOnBlur" => true,
+                    "delimiter" => ","
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => ['class' => 'btn btn-outline-primary']

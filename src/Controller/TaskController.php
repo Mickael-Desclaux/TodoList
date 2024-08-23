@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Priority;
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Entity\Category;
+use App\Entity\Priority;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {
@@ -26,6 +27,7 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $user = $this->getUser();
             $task->setUserId($user);
 

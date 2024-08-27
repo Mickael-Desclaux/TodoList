@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Task;
-use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +15,15 @@ class HomeController extends AbstractController
     {
         $repository = $doctrine->getRepository(Task::class);
 
-        $pendingTasks = $repository->findBy(['status' => 1]);
-        $inProgressTasks = $repository->findBy(['status' => 2]);
+        $tasks = $repository->findBy(['status' => [1, 2]]);
 
         return $this->render('home/index.html.twig', [
-            'pendingTasks' => $pendingTasks,
-            'inProgressTasks' => $inProgressTasks,
+            'pendingTasks' => array_filter($tasks, function($task) {
+                return $task->getStatus()->getId() == 1;
+            }),
+            'inProgressTasks' => array_filter($tasks, function($task) {
+                return $task->getStatus()->getId() == 2;
+            })
         ]);
     }
 }

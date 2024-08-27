@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TaskType extends AbstractType
 {
@@ -92,11 +91,6 @@ class TaskType extends AbstractType
                 "autocomplete" => true,
                 "multiple" => true,
                 "expanded" => false,
-                "tom_select_options" => [
-                    "create" => true,
-                    "createOnBlur" => true,
-                    "delimiter" => ","
-                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',

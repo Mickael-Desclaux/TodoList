@@ -1,35 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout d'une tâche
-{% endblock %}
+{% block title %}Ajout d'une tâche{% endblock %}
 
 {% block body %}
-	<div class="container-fluid">
-		<div class="row d-flex justify-content-center mt-5">
-			<div class="col-lg-6">
-				{{ form_start(form) }}
-				{{ form_label(form.title, null, { 'label_attr': { 'class': 'form-label' }}) }}
-				{{ form_widget(form.title, {'attr': { 'class': 'form-control mb-2'}}) }}
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-lg-6">
+            {{ form_start(form) }}
 
-				{{ form_label(form.description, null, { 'label_attr': { 'class': 'form-label' }}) }}
-				{{ form_widget(form.description, {'attr': { 'class': 'form-control mb-2'}}) }}
+            {{ form_label(form.title, null, { 'label_attr': { 'class': 'form-label' }}) }}
+            {{ form_widget(form.title, {'attr': { 'class': 'form-control mb-2'}}) }}
 
-				{{ form_label(form.priority, null, { 'label_attr': { 'class': 'form-label' }}) }}
-				{{ form_widget(form.priority, {'attr': { 'class': 'form-control mb-2'}}) }}
+            {{ form_label(form.description, null, { 'label_attr': { 'class': 'form-label' }}) }}
+            {{ form_widget(form.description, {'attr': { 'class': 'form-control mb-2'}}) }}
 
-				{{ form_label(form.limitDate, null, { 'label_attr': { 'class': 'form-label' }}) }}
-				{{ form_widget(form.limitDate, {'attr': { 'class': 'form-control mb-2'}}) }}
+			{{ form_label(form.categories, null, { 'label_attr': { 'class': 'form-label' }}) }}
 
-				{{ form_label(form.status, null, { 'label_attr': { 'class': 'form-label' }}) }}
-				{{ form_widget(form.status, {'attr': { 'class': 'form-control mb-2'}}) }}
+            <div class="d-flex align-items-center">
+                {{ form_widget(form.categories, {'attr': { 'class': 'mb-2 flex-grow-1'}}) }}
+                <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Ajouter</button>
+            </div>
 
-				{{ form_label(form.assignedUsers, null, { 'label_attr': { 'class': 'form-label' }}) }}
-				{{ form_widget(form.assignedUsers, {'attr': { 'class': 'mb-2'}}) }}
+            {{ form_label(form.priority, null, { 'label_attr': { 'class': 'form-label' }}) }}
+            {{ form_widget(form.priority, {'attr': { 'class': 'form-control mb-2'}}) }}
 
-				{{ form_widget(form.submit, {'attr': { 'class': 'btn btn-primary mt-1'}}) }}
-				{{ form_end(form) }}
-			</div>
-		</div>
-	</div>
+            {{ form_label(form.limitDate, null, { 'label_attr': { 'class': 'form-label' }}) }}
+            {{ form_widget(form.limitDate, {'attr': { 'class': 'form-control mb-2'}}) }}
+
+            {{ form_label(form.status, null, { 'label_attr': { 'class': 'form-label' }}) }}
+            {{ form_widget(form.status, {'attr': { 'class': 'form-control mb-2'}}) }}
+
+            {{ form_label(form.assignedUsers, null, { 'label_attr': { 'class': 'form-label' }}) }}
+            {{ form_widget(form.assignedUsers, {'attr': { 'class': 'mb-2'}}) }}
+
+            {{ form_widget(form.submit, {'attr': { 'class': 'btn btn-primary mt-1'}}) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<!-- Modale pour ajouter une nouvelle catégorie -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Ajouter une catégorie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-category-form">
+                    <div class="mb-3">
+                        <label for="category_name" class="form-label">Nom de la catégorie</label>
+                        <input type="text" class="form-control" id="category_name" name="category_name">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('add-category-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const categoryName = document.getElementById('category_name').value;
+
+    if (categoryName) {
+        fetch('{{ path('app_category_add') }}', {
+            method: 'POST',
+            body: JSON.stringify({ name: categoryName }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Ajouter la nouvelle catégorie dans le champ des catégories
+                const newOption = new Option(data.name, data.id, true, true);
+                const categoriesSelect = document.getElementById('task_categories');
+                categoriesSelect.add(newOption);
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+                modal.hide();
+            } else {
+                alert('Erreur: ' + data.message);
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
-
